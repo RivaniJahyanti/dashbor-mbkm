@@ -164,7 +164,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- 3. REKAYASA LOAD DATA & SPASIAL SEEDING ---
+# --- 3. LOAD DATA & SPASIAL SEEDING ---
 @st.cache_data(ttl=600)
 def load_data():
     sheet_id = "1VBeqi4OEmoDDQU5jOeZ2Jm5ois4M3YtAzY_rTcmiBSc"
@@ -196,7 +196,7 @@ def load_data():
             
         df.dropna(subset=['IPM', 'Kemiskinan (%)', 'TPT (%)'], inplace=True)
         
-        # Centroid koordinat geografis perkiraan Provinsi Aceh
+        # Centroid koordinat geografis Provinsi Aceh
         coordinates = {
             'Banda Aceh': [5.550, 95.320], 'Sabang': [5.890, 95.320], 'Lhokseumawe': [5.180, 97.140],
             'Langsa': [4.470, 97.970], 'Subulussalam': [2.640, 98.000], 'Aceh Besar': [5.380, 95.480],
@@ -233,7 +233,7 @@ with st.sidebar:
     selected_daerah = st.multiselect("Cakupan Wilayah:", options=daftar_daerah, placeholder="Seluruh Kabupaten/Kota")
     
     if st.button("🔄 Atur Ulang Filter", use_container_width=True):
-        st.st.rerun()
+        st.rerun()
 
 df_filtered = df_raw[df_raw['Kabupaten/Kota'].isin(selected_daerah)].copy() if selected_daerah else df_raw.copy()
 
@@ -241,7 +241,7 @@ df_filtered = df_raw[df_raw['Kabupaten/Kota'].isin(selected_daerah)].copy() if s
 st.markdown("""
 <div class="hero-container">
     <h1 class="hero-title">DASHBOARD STATISTIK REGIONAL & AREA KECIL PROVINSI ACEH</h1>
-    <p class="hero-subtitle">Analisis Indikator Makro Sektoral 2025 | Sistem Informasi Akademik Tugas Akhir Rivani Jahyanti</p>
+    <p class="hero-subtitle">Analisis Indikator Makro Sektoral 2025 | Sistem Informasi Akademik Mandiri Rivani Jahyanti</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -292,7 +292,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Membungkus kontrol kontrol penentu skala dan peta dalam satu kesatuan Premium Card
 st.markdown('<div class="premium-wrapper-card">', unsafe_allow_html=True)
 map_indicator = st.selectbox(
     "Pilih Indikator Peta Spasial:",
@@ -331,19 +330,20 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 tab1, tab2, tab3 = st.tabs(["📚 Indeks Pembangunan Manusia", "🏠 Tingkat Kemiskinan (%)", "💼 Pengangguran (TPT %)"])
+
+# Perbaikan: Menghapus parameter non-Plotly 'shadowheight' untuk menghindari ValueError
 chart_layout_base = dict(
     font=dict(family="Inter", size=12, color="#1E293B"),
     margin=dict(l=100, r=40, t=20, b=40),
     plot_bgcolor="#F8FAFC",
-    paper_bgcolor="rgba(0,0,0,0)",
-    shadowheight=5
+    paper_bgcolor="rgba(0,0,0,0)"
 )
 
 with tab1:
     st.markdown('<div class="premium-wrapper-card">', unsafe_allow_html=True)
     df_ipm = df_filtered.sort_values(by='IPM', ascending=True)
     fig_ipm = px.bar(df_ipm, x='IPM', y='Kabupaten/Kota', orientation='h', color='IPM', color_continuous_scale='Blues', height=550)
-    fig_ipm.add_vline(x=avg_ipm, line_width=2, line_dash="dash", line_color="#EF4444", annotation_text=f"Provincial Avg: {avg_ipm:.2f}", annotation_position="top right")
+    fig_ipm.add_vline(x=avg_ipm, line_width=2, line_dash="dash", line_color="#EF4444", annotation_text=f"Rata-rata: {avg_ipm:.2f}", annotation_position="top right")
     fig_ipm.update_layout(**chart_layout_base)
     fig_ipm.update_layout(coloraxis_showscale=False, yaxis_title=None, xaxis_title="Nilai Indeks IPM")
     st.plotly_chart(fig_ipm, use_container_width=True)
@@ -353,7 +353,7 @@ with tab2:
     st.markdown('<div class="premium-wrapper-card">', unsafe_allow_html=True)
     df_km = df_filtered.sort_values(by='Kemiskinan (%)', ascending=True)
     fig_km = px.bar(df_km, x='Kemiskinan (%)', y='Kabupaten/Kota', orientation='h', color='Kemiskinan (%)', color_continuous_scale='Reds', height=550)
-    fig_km.add_vline(x=avg_kemiskinan, line_width=2, line_dash="dash", line_color="#0284C7", annotation_text=f"Provincial Avg: {avg_kemiskinan:.2f}%", annotation_position="top right")
+    fig_km.add_vline(x=avg_kemiskinan, line_width=2, line_dash="dash", line_color="#0066C2", annotation_text=f"Rata-rata: {avg_kemiskinan:.2f}%", annotation_position="top right")
     fig_km.update_layout(**chart_layout_base)
     fig_km.update_layout(coloraxis_showscale=False, yaxis_title=None, xaxis_title="Persentase Penduduk Miskin (%)")
     st.plotly_chart(fig_km, use_container_width=True)
@@ -363,14 +363,14 @@ with tab3:
     st.markdown('<div class="premium-wrapper-card">', unsafe_allow_html=True)
     df_tpt = df_filtered.sort_values(by='TPT (%)', ascending=True)
     fig_tpt = px.bar(df_tpt, x='TPT (%)', y='Kabupaten/Kota', orientation='h', color='TPT (%)', color_continuous_scale='Oranges', height=550)
-    fig_tpt.add_vline(x=avg_tpt, line_width=2, line_dash="dash", line_color="#10B981", annotation_text=f"Provincial Avg: {avg_tpt:.2f}%", annotation_position="top right")
+    fig_tpt.add_vline(x=avg_tpt, line_width=2, line_dash="dash", line_color="#10B981", annotation_text=f"Rata-rata: {avg_tpt:.2f}%", annotation_position="top right")
     fig_tpt.update_layout(**chart_layout_base)
     fig_tpt.update_layout(coloraxis_showscale=False, yaxis_title=None, xaxis_title="Tingkat Pengangguran Terbuka (%)")
     st.plotly_chart(fig_tpt, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 
-# --- 9. SEKSI LINEAR CORRELATION (VERTICAL 1 COLUMN LAYOUT) ---
+# --- 9. SEKSI LINEAR CORRELATION (VERTICAL LAYOUT) ---
 st.markdown("""
 <div class="section-banner-card">
     <p class="section-banner-text">🔍 Matriks Korelasi & Permodelan Analisis Linier</p>
@@ -526,7 +526,8 @@ st.markdown("""
 # --- 13. PROFESSIONAL FOOTER (IDENTITAS MAHASISWA) ---
 st.markdown("""
 <div style="text-align: center; border-top: 1px solid #E2E8F0; padding-top: 25px; margin-top: 60px;">
-    <p style="font-size: 12px; color: #0066C2; font-weight:600; margin: 5px 0 0 0;">oleh: Rivani Jahyanti | NPM: 2308108010024</p>
-    <p style="font-size: 11px; color: #94A3B8; margin: 3px 0 0 0;">Sumber Data Resmi: Badan Pusat Statistik (BPS) </p>
+    <p style="font-size: 14px; color: #1E293B; font-weight:700; margin: 0;">🏛️ Portal Data Statistik Regional Makro Provinsi Aceh - Tahun Data 2025</p>
+    <p style="font-size: 12px; color: #0066C2; font-weight:600; margin: 5px 0 0 0;">Sistem Informasi Mandiri oleh: Rivani Jahyanti | NPM: 2308108010024</p>
+    <p style="font-size: 11px; color: #94A3B8; margin: 3px 0 0 0;">Sumber Data Resmi: Badan Pusat Statistik (BPS) | Dikembangkan Berbasis Framework Streamlit Enterprise & Plotly Engine</p>
 </div>
 """, unsafe_allow_html=True)
