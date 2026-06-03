@@ -227,7 +227,7 @@ with col_kpi3:
 
 
 # --- 6. VISUALISASI RANKING (BAR CHARTS) ---
-st.markdown("<p class="section-header">📈 Urutan Dan Peringkat Indikator Pembangunan</p>", unsafe_allow_html=True)
+st.markdown("<p class='section-header'>📈 Urutan Dan Peringkat Indikator Pembangunan</p>", unsafe_allow_html=True)
 
 tab1, tab2, tab3 = st.tabs(["Indeks Pembangunan Manusia (IPM)", "Tingkat Kemiskinan (%)", "Tingkat Pengangguran Terbuka (TPT %)"])
 
@@ -274,7 +274,7 @@ with tab3:
 
 
 # --- 7. ANALISIS KORELASI (SCATTER PLOTS DENGAN REGRESI MANUAL) ---
-st.markdown("<p class="section-header">🔍 Analisis Hubungan Antar Indikator Regional</p>", unsafe_allow_html=True)
+st.markdown("<p class='section-header'>🔍 Analisis Hubungan Antar Indikator Regional</p>", unsafe_allow_html=True)
 
 col_sc1, col_sc2 = st.columns(2)
 
@@ -327,7 +327,7 @@ with col_sc2:
 
 
 # --- 8. KARTU INFORMASI DAERAH EKSTREM (TOP & BOTTOM) ---
-st.markdown("<p class="section-header">🏆 Sorotan Daerah Berkinerja Ekstrem</p>", unsafe_allow_html=True)
+st.markdown("<p class='section-header'>🏆 Sorotan Daerah Berkinerja Ekstrem</p>", unsafe_allow_html=True)
 
 col_info1, col_info2, col_info3, col_info4 = st.columns(4)
 top_ipm = df_filtered.nlargest(5, 'IPM')
@@ -365,7 +365,7 @@ with col_info4:
 
 
 # --- 9. TABEL DATA INTERAKTIF ---
-st.markdown("<p class="section-header">📋 Basis Data Regional Interaktif</p>", unsafe_allow_html=True)
+st.markdown("<p class='section-header'>📋 Basis Data Regional Interaktif</p>", unsafe_allow_html=True)
 
 st.dataframe(
     df_filtered,
@@ -381,7 +381,7 @@ st.dataframe(
 
 
 # --- 10. RINGKASAN INSIGHT OTOMATIS ---
-st.markdown("<p class="section-header">🤖 Ringkasan Eksekutif Dan Sintesis Data</p>", unsafe_allow_html=True)
+st.markdown("<p class='section-header'>🤖 Ringkasan Eksekutif Dan Sintesis Data</p>", unsafe_allow_html=True)
 
 highest_ipm_row = df_filtered.loc[df_filtered['IPM'].idxmax()]
 lowest_ipm_row = df_filtered.loc[df_filtered['IPM'].idxmin()]
