@@ -7,11 +7,11 @@ import numpy as np
 # --- 1. KONFIGURASI HALAMAN ---
 st.set_page_config(
     layout="wide",
-    page_title="Dashboard Statistik Regional - Rivani Jahyanti",
-    page_icon="📊"
+    page_title="Rivani Jahyanti - 2308108010024",
+    page_icon=""
 )
 
-# --- 2. CUSTOM CSS PREMIUM (GAYA IMAGE_A26520.PNG & IMAGE_A260CD.PNG) ---
+# --- 2. CUSTOM CSS PREMIUM ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -25,7 +25,7 @@ st.markdown("""
         background-color: #F8FAFC;
     }
     
-    /* Hero Banner Slim Layout (Referensi image_a26520.png) */
+    /* Hero Banner Slim Layout */
     .hero-container {
         background: linear-gradient(135deg, #0066C2 0%, #1565C0 100%);
         padding: 25px 20px;
@@ -48,7 +48,7 @@ st.markdown("""
         opacity: 0.95;
     }
 
-    /* Container Banner Judul Seksional (Gaya image_a26520.png) */
+    /* Container Banner Judul Seksional */
     .section-banner-card {
         background: linear-gradient(135deg, #0066C2 0%, #1E40AF 100%);
         padding: 15px 20px;
@@ -66,7 +66,7 @@ st.markdown("""
         letter-spacing: 0.5px;
     }
 
-    /* Card Umum Pembungkus Grafik & Peta (Referensi image_a260cd.png) */
+    /* Card Umum Pembungkus Grafik */
     .premium-wrapper-card {
         background-color: #FFFFFF;
         padding: 25px;
@@ -76,7 +76,7 @@ st.markdown("""
         margin-bottom: 25px;
     }
 
-    /* Premium KPI Cards (Referensi Kontras Cerah image_a260cd.png) */
+    /* Premium KPI Cards (Kontras Cerah) */
     .kpi-gradient-card {
         padding: 22px;
         border-radius: 12px;
@@ -86,6 +86,7 @@ st.markdown("""
         gap: 18px;
         transition: transform 0.2s;
         border: 1px solid rgba(255,255,255,0.2);
+        margin-bottom: 15px;
     }
     .kpi-gradient-card:hover {
         transform: translateY(-3px);
@@ -102,11 +103,11 @@ st.markdown("""
         box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
     }
     .kpi-num-big {
-        font-size: 32px;
+        font-size: 30px;
         color: #FFFFFF;
         font-weight: 800;
         margin: 0;
-        line-height: 1;
+        line-height: 1.1;
     }
     .kpi-label-top {
         font-size: 11px;
@@ -117,36 +118,12 @@ st.markdown("""
         margin-bottom: 4px;
         opacity: 0.9;
     }
-
-    /* Ranking Leaderboard Card Style */
-    .ranking-box-container {
-        background-color: #FFFFFF;
-        padding: 20px;
-        border-radius: 14px;
-        border: 1px solid #E2E8F0;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.02);
-        height: 100%;
-    }
-    .ranking-header-strip {
-        font-size: 14px;
-        font-weight: 700;
+    .kpi-sub-text {
+        font-size: 12px;
         color: #FFFFFF;
-        padding: 10px 14px;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-    .leaderboard-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 4px;
-        border-bottom: 1px dashed #E2E8F0;
-        font-size: 13.5px;
-    }
-    .leaderboard-row:last-child {
-        border-bottom: none;
+        margin: 2px 0 0 0;
+        opacity: 0.85;
+        font-weight: 500;
     }
 
     /* Insight Panel */
@@ -164,7 +141,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- 3. LOAD DATA & SPASIAL SEEDING ---
+# --- 3. LOAD DATA & DATA PREPROCESSING ---
 @st.cache_data(ttl=600)
 def load_data():
     sheet_id = "1VBeqi4OEmoDDQU5jOeZ2Jm5ois4M3YtAzY_rTcmiBSc"
@@ -195,22 +172,6 @@ def load_data():
             df[col] = pd.to_numeric(df[col], errors='coerce')
             
         df.dropna(subset=['IPM', 'Kemiskinan (%)', 'TPT (%)'], inplace=True)
-        
-        # Centroid koordinat geografis Provinsi Aceh
-        coordinates = {
-            'Banda Aceh': [5.550, 95.320], 'Sabang': [5.890, 95.320], 'Lhokseumawe': [5.180, 97.140],
-            'Langsa': [4.470, 97.970], 'Subulussalam': [2.640, 98.000], 'Aceh Besar': [5.380, 95.480],
-            'Aceh Utara': [5.000, 97.100], 'Aceh Timur': [4.630, 97.630], 'Aceh Selatan': [3.150, 97.200],
-            'Aceh Barat': [4.450, 96.150], 'Aceh Tengah': [4.600, 96.800], 'Aceh Tenggara': [3.370, 97.830],
-            'Aceh Singkil': [2.430, 97.920], 'Bireuen': [5.100, 96.700], 'Simeulue': [2.610, 96.080],
-            'Pidie': [5.080, 95.950], 'Pidie Jaya': [5.150, 96.250], 'Benar Meriah': [4.730, 96.850],
-            'Gayo Lues': [3.950, 97.350], 'Aceh Jaya': [4.750, 95.650], 'Nagan Raya': [4.150, 96.300],
-            'Aceh Barat Daya': [3.800, 96.880], 'Aceh Tamiang': [4.250, 98.050]
-        }
-        
-        df['lat'] = df['Kabupaten/Kota'].map(lambda x: coordinates.get(x, [4.20, 96.50])[0])
-        df['lon'] = df['Kabupaten/Kota'].map(lambda x: coordinates.get(x, [4.20, 96.50])[1])
-        
         return df
     except Exception as e:
         st.error(f"Gagal memuat data utama. Detail: {e}")
@@ -218,17 +179,17 @@ def load_data():
 
 df_raw = load_data()
 
-# --- 4. SIDEBAR REDESIGN ---
+# --- 4. SIDEBAR DESIGN ---
 with st.sidebar:
     st.markdown("""
     <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
-        <span style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">💻 Pengembang Sistem</span>
+        <span style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">👤 Pengembang Dashboard</span>
         <p style="font-size: 14px; margin:4px 0 0 0; color:#0066C2; font-weight:700;">Rivani Jahyanti</p>
         <p style="font-size: 12px; margin:2px 0 0 0; color:#475569; font-weight:500;">NPM: 2308108010024</p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("### ⚙️ Filter Analisis")
+    st.markdown("### 🔎 Filter Data")
     daftar_daerah = sorted(df_raw['Kabupaten/Kota'].unique())
     selected_daerah = st.multiselect("Cakupan Wilayah:", options=daftar_daerah, placeholder="Seluruh Kabupaten/Kota")
     
@@ -237,15 +198,15 @@ with st.sidebar:
 
 df_filtered = df_raw[df_raw['Kabupaten/Kota'].isin(selected_daerah)].copy() if selected_daerah else df_raw.copy()
 
-# --- 5. HERO BANNER HEADER (GAYA IMAGE_A26520.PNG) ---
+# --- 5. HERO BANNER HEADER ---
 st.markdown("""
 <div class="hero-container">
-    <h1 class="hero-title">DASHBOARD STATISTIK REGIONAL & AREA KECIL PROVINSI ACEH</h1>
-    <p class="hero-subtitle">Analisis Indikator Makro Sektoral 2025 | Sistem Informasi Akademik Mandiri Rivani Jahyanti</p>
+    <h1 class="hero-title">DASHBOARD STATISTIK REGIONAL DAN AREA KECIL PROVINSI ACEH</h1>
+    <p class="hero-subtitle">Visualisasi dan Analisis Indikator Pembangunan Daerah Tahun 2025</p>
 </div>
 """, unsafe_allow_html=True)
 
-# --- 6. METRIK KPI UTAMA (GAYA KONTRAS IMAGE_A260CD.PNG) ---
+# --- 6. METRIK KPI UTAMA ---
 avg_ipm = df_filtered['IPM'].mean()
 avg_kemiskinan = df_filtered['Kemiskinan (%)'].mean()
 avg_tpt = df_filtered['TPT (%)'].mean()
@@ -255,9 +216,9 @@ col_kpi1, col_kpi2, col_kpi3 = st.columns(3)
 with col_kpi1:
     st.markdown(f"""
     <div class="kpi-gradient-card" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);">
-        <div class="kpi-icon-round">📚</div>
+        <div class="kpi-icon-round">🎓</div>
         <div>
-            <p class="kpi-label-top">Rata-Rata IPM Provinsi</p>
+            <p class="kpi-label-top">Rata-Rata IPM Aceh</p>
             <p class="kpi-num-big">{avg_ipm:.2f}</p>
         </div>
     </div>
@@ -266,9 +227,9 @@ with col_kpi1:
 with col_kpi2:
     st.markdown(f"""
     <div class="kpi-gradient-card" style="background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);">
-        <div class="kpi-icon-round">🏠</div>
+        <div class="kpi-icon-round">👥</div>
         <div>
-            <p class="kpi-label-top">Rata-Rata Kemiskinan</p>
+            <p class="kpi-label-top">Rata-Rata Persentase Kemiskinan Aceh</p>
             <p class="kpi-num-big">{avg_kemiskinan:.2f}%</p>
         </div>
     </div>
@@ -279,62 +240,29 @@ with col_kpi3:
     <div class="kpi-gradient-card" style="background: linear-gradient(135deg, #F59E0B 0%, #B45309 100%);">
         <div class="kpi-icon-round">💼</div>
         <div>
-            <p class="kpi-label-top">Rata-Rata TPT Regional</p>
+            <p class="kpi-label-top">Rata-Rata TPT Aceh</p>
             <p class="kpi-num-big">{avg_tpt:.2f}%</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-# --- 7. SEKSI DISTRIBUSI GEOGRAFIS (MAP IN CARD) ---
+
+# --- 7. SEKSI RANKING KINERJA (BAR CHART) ---
 st.markdown("""
 <div class="section-banner-card">
-    <p class="section-banner-text">🗺️ Distribusi Geografis & Pemetaan Spasial Indikator</p>
+    <p class="section-banner-text">Perbandingan Indikator Antar Kabupaten/Kota</p>
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="premium-wrapper-card">', unsafe_allow_html=True)
-map_indicator = st.selectbox(
-    "Pilih Indikator Peta Spasial:",
-    options=['IPM', 'Kemiskinan (%)', 'TPT (%)'],
-    key="map_indicator_select"
-)
-st.markdown(f"<p style='font-size:13px; color:#64748B; margin-bottom:15px;'>Visualisasi interaktif menampilkan titik bobot relatif koordinat administrasi daerah berdasarkan nilai intensitas <b>{map_indicator}</b>.</p>", unsafe_allow_html=True)
+tab1, tab2, tab3 = st.tabs([
+    "🎓 Indeks Pembangunan Manusia",
+    "👥 Tingkat Kemiskinan (%)",
+    "💼 Tingkat Pengangguran Terbuka (%)"
+])
 
-color_map_scale = {
-    'IPM': px.colors.sequential.Blues,
-    'Kemiskinan (%)': px.colors.sequential.Reds,
-    'TPT (%)': px.colors.sequential.Oranges
-}
-
-fig_map = px.scatter_mapbox(
-    df_filtered, lat="lat", lon="lon", size=map_indicator, color=map_indicator,
-    color_continuous_scale=color_map_scale[map_indicator], size_max=25, zoom=6.2,
-    center=dict(lat=4.20, lon=96.80), mapbox_style="carto-positron",
-    hover_name="Kabupaten/Kota", hover_data={map_indicator: True, 'lat': False, 'lon': False}
-)
-fig_map.update_layout(
-    margin=dict(l=0, r=0, t=0, b=0), 
-    height=400, 
-    paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(0,0,0,0)"
-)
-st.plotly_chart(fig_map, use_container_width=True)
-st.markdown('</div>', unsafe_allow_html=True)
-
-
-# --- 8. SEKSI RANKING KINERJA (BAR CHART PREMIUM) ---
-st.markdown("""
-<div class="section-banner-card">
-    <p class="section-banner-text">📈 Analisis Urutan & Peringkat Komparatif Daerah</p>
-</div>
-""", unsafe_allow_html=True)
-
-tab1, tab2, tab3 = st.tabs(["📚 Indeks Pembangunan Manusia", "🏠 Tingkat Kemiskinan (%)", "💼 Pengangguran (TPT %)"])
-
-# Perbaikan: Menghapus parameter non-Plotly 'shadowheight' untuk menghindari ValueError
 chart_layout_base = dict(
     font=dict(family="Inter", size=12, color="#1E293B"),
-    margin=dict(l=100, r=40, t=20, b=40),
+    margin=dict(l=120, r=40, t=20, b=40),
     plot_bgcolor="#F8FAFC",
     paper_bgcolor="rgba(0,0,0,0)"
 )
@@ -370,10 +298,10 @@ with tab3:
     st.markdown('</div>', unsafe_allow_html=True)
 
 
-# --- 9. SEKSI LINEAR CORRELATION (VERTICAL LAYOUT) ---
+# --- 8. SEKSI LINEAR CORRELATION (SCATTER PLOT) ---
 st.markdown("""
 <div class="section-banner-card">
-    <p class="section-banner-text">🔍 Matriks Korelasi & Permodelan Analisis Linier</p>
+    <p class="section-banner-text">Analisis Korelasi dan Regresi Linier</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -387,22 +315,39 @@ def generate_premium_scatter(data, x_col, y_col, marker_color):
     y_line = m * x_line + c
     
     fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=x, y=y, mode='markers', name='Kab/Kota',
-        text=data['Kabupaten/Kota'],
-        hovertemplate='<b>%{text}</b><br>'+x_col+': %{x:.2f}<br>'+y_col+': %{y:.2f}%<extra></extra>',
-        marker=dict(size=14, color=marker_color, opacity=0.85, line=dict(width=1.5, color='#FFFFFF'))
-    ))
+    
     fig.add_trace(go.Scatter(
         x=x_line, y=y_line, mode='lines', name='Garis Tren Regresi',
-        line=dict(color='#EF4444', width=3, dash='dash')
+        line=dict(color='#E11D48', width=3, dash='dash')
     ))
+    
+    fig.add_trace(go.Scatter(
+        x=x, y=y, mode='markers', name='Kabupaten/Kota',
+        text=data['Kabupaten/Kota'],
+        hovertemplate='<b>%{text}</b><br>'+x_col+': %{x:.2f}<br>'+y_col+': %{y:.2f}%<extra></extra>',
+        marker=dict(
+            size=15, 
+            color=marker_color, 
+            opacity=0.9, 
+            line=dict(width=1.5, color='#FFFFFF'),
+            shadow=dict(color="rgba(0,0,0,0.1)", blur=4, x=0, y=2)
+        )
+    ))
+    
     fig.update_layout(
-        xaxis_title=f"Indikator Batas Kiri ({x_col})", yaxis_title=f"Indikator Vertikal ({y_col})",
-        showlegend=True, legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01), height=420,
-        plot_bgcolor="#F1F5F9", paper_bgcolor="rgba(0,0,0,0)",
-        margin=dict(l=50, r=50, t=20, b=50)
+        xaxis_title=f"Indikator ({x_col})", 
+        yaxis_title=f"Indikator ({y_col})",
+        showlegend=True, 
+        legend=dict(yanchor="top", y=0.98, xanchor="left", x=0.02, bgcolor="rgba(255,255,255,0.8)", bordercolor="#E2E8F0", borderwidth=1), 
+        height=450,
+        plot_bgcolor="#FFFFFF",
+        paper_bgcolor="rgba(0,0,0,0)",
+        margin=dict(l=60, r=40, t=30, b=60)
     )
+    
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='#F1F5F9', zeroline=False, bordercolor='#E2E8F0', linecolor='#E2E8F0')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='#F1F5F9', zeroline=False, bordercolor='#E2E8F0', linecolor='#E2E8F0')
+    
     return fig, m, c, r
 
 # Model 1: IPM vs Kemiskinan
@@ -411,9 +356,9 @@ fig_sc1, m1, c1, r1 = generate_premium_scatter(df_filtered, 'IPM', 'Kemiskinan (
 st.plotly_chart(fig_sc1, use_container_width=True)
 st.markdown(f"""
 <div class="insight-panel-card">
-    <b style="color:#0369A1; font-size:15px;">📌 Analisis Hubungan Struktur Linier: IPM vs Kemiskinan</b><br>
-    • <b>Persamaan Model Regresi:</b> $y = {m1:.4f}x + {c1:.4f}$<br>
-    • <b>Koefisien Korelasi Pearson ($r$):</b> <b>{r1:.4f}</b> (Korelasi Negatif Kuat)<br>
+    <b style="color:#0369A1; font-size:15px;">📊 Interpretasi Hubungan IPM dan Kemiskinan</b><br>
+    • <b>Persamaan Model Regresi:</b> y = {m1:.4f}x + {c1:.4f} <br>
+    • <b>Koefisien Korelasi Pearson (r):</b> <b>{r1:.4f}</b> (Korelasi Negatif Kuat)<br>
     <span style="color:#475569;">Arah tren berbanding terbalik secara signifikan. Setiap intervensi peningkatan satu poin indeks IPM berasosiasi nyata terhadap reduksi persentase kemiskinan makro daerah sebesar {abs(m1):.2f}%.</span>
 </div>
 """, unsafe_allow_html=True)
@@ -425,61 +370,77 @@ fig_sc2, m2, c2, r2 = generate_premium_scatter(df_filtered, 'IPM', 'TPT (%)', '#
 st.plotly_chart(fig_sc2, use_container_width=True)
 st.markdown(f"""
 <div class="insight-panel-card" style="border-left-color: #F59E0B;">
-    <b style="color:#B45309; font-size:15px;">📌 Analisis Hubungan Struktur Linier: IPM vs Ketenagakerjaan (TPT)</b><br>
-    • <b>Persamaan Model Regresi:</b> $y = {m2:.4f}x + {c2:.4f}$<br>
-    • <b>Koefisien Korelasi Pearson ($r$):</b> <b>{r2:.4f}</b> (Korelasi Positif Kontekstual)<br>
+    <b style="color:#B45309; font-size:15px;">📊 Interpretasi Hubungan IPM dan Tingkat Pengangguran Terbuka</b><br>
+    • <b>Persamaan Model Regresi:</b> y = {m2:.4f}x + {c2:.4f} <br>
+    • <b>Koefisien Korelasi Pearson (r):</b> <b>{r2:.4f}</b> (Korelasi Positif Kontekstual)<br>
     <span style="color:#475569;">Nilai parameter kemiringan positif sebesar {m2:.4f} mencerminkan karakteristik penyerapan tenaga kerja terdidik di wilayah urban dengan karakteristik capaian IPM yang tinggi.</span>
 </div>
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 
-# --- 10. SEKSI KLASTERISASI EKSTREM (CARD LEADERBOARD) ---
+# --- 9. SEKSI KLASTERISASI EKSTREM (PREMIUM KPI CARDS) ---
 st.markdown("""
 <div class="section-banner-card">
-    <p class="section-banner-text">🏆 Sorotan Klasterisasi Kinerja Ekstrem</p>
+    <p class="section-banner-text">📌 Indikator Daerah dengan Nilai Ekstrem</p>
 </div>
 """, unsafe_allow_html=True)
 
 col_l1, col_l2, col_l3, col_l4 = st.columns(4)
 
 with col_l1:
-    st.markdown('<div class="ranking-box-container">', unsafe_allow_html=True)
-    st.markdown('<div class="ranking-header-strip" style="background: linear-gradient(135deg, #10B981 0%, #047857 100%);">🌟 5 IPM Tertinggi</div>', unsafe_allow_html=True)
-    top_ipm_data = [("🥇 Kota Banda Aceh", "89.55"), ("🥈 Kota Langsa", "81.77"), ("🥉 Kota Lhokseumawe", "81.75"), ("4. Kota Sabang", "80.04"), ("5. Aceh Tengah", "78.09")]
-    for name, val in top_ipm_data:
-        st.markdown(f'<div class="leaderboard-row"><span>{name}</span><b>{val}</b></div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="kpi-gradient-card" style="background: linear-gradient(135deg, #10B981 0%, #047857 100%); height: 110px;">
+        <div class="kpi-icon-round">📈</div>
+        <div>
+            <p class="kpi-label-top">IPM Tertinggi</p>
+            <p class="kpi-num-big">89.55</p>
+            <p class="kpi-sub-text">Kota Banda Aceh</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col_l2:
-    st.markdown('<div class="ranking-box-container">', unsafe_allow_html=True)
-    st.markdown('<div class="ranking-header-strip" style="background: linear-gradient(135deg, #64748B 0%, #334155 100%);">⚠️ 5 IPM Terendah</div>', unsafe_allow_html=True)
-    bottom_ipm_data = [("🛑 Kota Subulussalam", "71.63"), ("🛑 Simeulue", "71.94"), ("🛑 Aceh Barat Daya", "72.10"), ("🛑 Aceh Timur", "72.20"), ("🛑 Gayo Lues", "72.61")]
-    for name, val in bottom_ipm_data:
-        st.markdown(f'<div class="leaderboard-row"><span>{name}</span><b>{val}</b></div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="kpi-gradient-card" style="background: linear-gradient(135deg, #64748B 0%, #334155 100%); height: 110px;">
+        <div class="kpi-icon-round">📉</div>
+        <div>
+            <p class="kpi-label-top">IPM Terendah</p>
+            <p class="kpi-num-big">71.63</p>
+            <p class="kpi-sub-text">Kota Subulussalam</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col_l3:
-    st.markdown('<div class="ranking-box-container">', unsafe_allow_html=True)
-    st.markdown('<div class="ranking-header-strip" style="background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);">🚨 5 Kemiskinan Tertinggi</div>', unsafe_allow_html=True)
-    top_pov_data = [("🥀 Aceh Singkil", "17.07%"), ("🥀 Gayo Lues", "16.77%"), ("🥀 Pidie", "16.46%"), ("🥀 Bener Meriah", "16.20%"), ("🥀 Pidie Jaya", "16.12%")]
-    for name, val in top_pov_data:
-        st.markdown(f'<div class="leaderboard-row"><span>{name}</span><b>{val}</b></div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="kpi-gradient-card" style="background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%); height: 110px;">
+        <div class="kpi-icon-round">👥</div>
+        <div>
+            <p class="kpi-label-top">Kemiskinan Tertinggi</p>
+            <p class="kpi-num-big">17.07%</p>
+            <p class="kpi-sub-text">Aceh Singkil</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col_l4:
-    st.markdown('<div class="ranking-box-container">', unsafe_allow_html=True)
-    st.markdown('<div class="ranking-header-strip" style="background: linear-gradient(135deg, #F59E0B 0%, #B45309 100%);">💼 5 TPT Tertinggi</div>', unsafe_allow_html=True)
-    top_tpt_data = [("🔍 Kota Lhokseumawe", "8.24%"), ("🔍 Aceh Besar", "7.86%"), ("🔍 Aceh Timur", "7.74%"), ("🔍 Kota Langsa", "7.31%"), ("🔍 Kota Banda Aceh", "7.30%")]
-    for name, val in top_tpt_data:
-        st.markdown(f'<div class="leaderboard-row"><span>{name}</span><b>{val}</b></div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="kpi-gradient-card" style="background: linear-gradient(135deg, #F59E0B 0%, #B45309 100%); height: 110px;">
+        <div class="kpi-icon-round">💼</div>
+        <div>
+            <p class="kpi-label-top">TPT Tertinggi</p>
+            <p class="kpi-num-big">8.24%</p>
+            <p class="kpi-sub-text">Kota Lhokseumawe</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 
-# --- 11. BASE DATA EDITOR ---
+# --- 10. BASE DATA EDITOR ---
 st.markdown("""
 <div class="section-banner-card">
-    <p class="section-banner-text">📋 Basis Data Regional Interaktif</p>
+    <p class="section-banner-text">🗂️ Tabel Data Statistik Regional</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -498,16 +459,18 @@ st.data_editor(
 st.markdown('</div>', unsafe_allow_html=True)
 
 
-# --- 12. RINGKASAN EKSEKUTIF CARD (PREMIUM REDESIGN) ---
+# --- 11. RINGKASAN EKSEKUTIF CARD ---
 st.markdown("""
 <div class="section-banner-card">
-    <p class="section-banner-text">🎯 Ringkasan Eksekutif & Sintesis Data</p>
+    <p class="section-banner-text">📄 Ringkasan Eksekutif dan Temuan Utama</p>
 </div>
 """, unsafe_allow_html=True)
 
 st.markdown("""
 <div style="background-color:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:25px; box-shadow:0 8px 24px rgba(0,0,0,0.03);">
-    <h4 style="margin-top:0; color:#0066C2; font-size:16px; font-weight:700;">🎯 Temuan Utama Evaluasi Daerah Terpilih:</h4>
+    <h4 style="margin-top:0; color:#0066C2; font-size:16px; font-weight:700;">
+        📊 Temuan Utama Analisis Statistik:
+    </h4>
     <div style="display:flex; flex-direction:column; gap:12px; margin-top:15px; font-size:14px; color:#334155;">
         <div style="padding:10px 15px; background-color:#F0F9FF; border-left:4px solid #0284C7; border-radius:4px;">
             <b>• Pembangunan Manusia Optimal:</b> Capaian IPM tertinggi diraih oleh <b>Kota Banda Aceh</b> (89.55), sedangkan batas minimum tercatat di <b>Kota Subulussalam</b> (71.63).
@@ -523,11 +486,11 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# --- 13. PROFESSIONAL FOOTER (IDENTITAS MAHASISWA) ---
+# --- 12. PROFESSIONAL FOOTER ---
 st.markdown("""
 <div style="text-align: center; border-top: 1px solid #E2E8F0; padding-top: 25px; margin-top: 60px;">
-    <p style="font-size: 14px; color: #1E293B; font-weight:700; margin: 0;">🏛️ Portal Data Statistik Regional Makro Provinsi Aceh - Tahun Data 2025</p>
-    <p style="font-size: 12px; color: #0066C2; font-weight:600; margin: 5px 0 0 0;">Sistem Informasi Mandiri oleh: Rivani Jahyanti | NPM: 2308108010024</p>
-    <p style="font-size: 11px; color: #94A3B8; margin: 3px 0 0 0;">Sumber Data Resmi: Badan Pusat Statistik (BPS) | Dikembangkan Berbasis Framework Streamlit Enterprise & Plotly Engine</p>
+    <p style="font-size: 14px; color: #1E293B; font-weight:700; margin: 0;"> Dashboard Statistik Regional dan Area Kecil Provinsi Aceh - Tahun Data 2025</p>
+    <p style="font-size: 12px; color: #0066C2; font-weight:600; margin: 5px 0 0 0;">Dashboard Statistik Interaktif oleh: Rivani Jahyanti | NPM: 2308108010024</p>
+    <p style="font-size: 11px; color: #94A3B8; margin: 3px 0 0 0;">Sumber Data Resmi: Badan Pusat Statistik (BPS) </p>
 </div>
 """, unsafe_allow_html=True)
