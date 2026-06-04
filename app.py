@@ -229,7 +229,7 @@ with col_kpi2:
     <div class="kpi-gradient-card" style="background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);">
         <div class="kpi-icon-round">👥</div>
         <div>
-            <p class="kpi-label-top">Rata-Rata Persentase Kemiskinan Aceh</p>
+            <p class="kpi-label-top">Rata-Rata Kemiskinan Aceh</p>
             <p class="kpi-num-big">{avg_kemiskinan:.2f}%</p>
         </div>
     </div>
