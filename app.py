@@ -229,7 +229,7 @@ with col_kpi2:
     <div class="kpi-gradient-card" style="background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);">
         <div class="kpi-icon-round">👥</div>
         <div>
-            <p class="kpi-label-top">Rata-Rata Kemiskinan Aceh</p>
+            <p class="kpi-label-top">Rata-Rata Persentase Kemiskinan Aceh</p>
             <p class="kpi-num-big">{avg_kemiskinan:.2f}%</p>
         </div>
     </div>
@@ -357,8 +357,9 @@ st.markdown(f"""
 <div class="insight-panel-card">
     <b style="color:#0369A1; font-size:15px;">📊 Interpretasi Hubungan IPM dan Kemiskinan</b><br>
     • <b>Persamaan Model Regresi:</b> y = {m1:.4f}x + {c1:.4f} <br>
-    • <b>Koefisien Korelasi Pearson (r):</b> <b>{r1:.4f}</b> (Korelasi Negatif Kuat)<br>
-    <span style="color:#475569;">Arah tren berbanding terbalik secara signifikan. Setiap intervensi peningkatan satu poin indeks IPM berasosiasi nyata terhadap reduksi persentase kemiskinan makro daerah sebesar {abs(m1):.2f}%.</span>
+    • <b>Koefisien Korelasi Pearson (r):</b> <b>{r1:.4f}</b> (Hubungan Negatif Sedang)<br>
+    <span style="color:#475569;"><b>Interpretasi:</b><br>
+    Terdapat hubungan negatif dengan kekuatan sedang antara Indeks Pembangunan Manusia (IPM) dan tingkat kemiskinan kabupaten/kota di Provinsi Aceh. Hasil ini menunjukkan bahwa daerah dengan nilai IPM yang lebih tinggi cenderung memiliki tingkat kemiskinan yang lebih rendah. Berdasarkan model regresi, setiap kenaikan satu poin IPM berkaitan dengan penurunan tingkat kemiskinan sekitar {abs(m1):.2f} poin persentase. Namun demikian, hubungan ini tidak serta-merta menunjukkan hubungan sebab-akibat karena tingkat kemiskinan juga dipengaruhi oleh berbagai faktor ekonomi dan sosial lainnya.</span>
 </div>
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
@@ -370,9 +371,10 @@ st.plotly_chart(fig_sc2, use_container_width=True)
 st.markdown(f"""
 <div class="insight-panel-card" style="border-left-color: #F59E0B;">
     <b style="color:#B45309; font-size:15px;">📊 Interpretasi Hubungan IPM dan Tingkat Pengangguran Terbuka</b><br>
-    • <b>Persamaan Model Regresi:</b> y = {m2:.4f}x + {c2:.4f} <br>
-    • <b>Koefisien Korelasi Pearson (r):</b> <b>{r2:.4f}</b> (Korelasi Positif Kontekstual)<br>
-    <span style="color:#475569;">Nilai parameter kemiringan positif sebesar {m2:.4f} mencerminkan karakteristik penyerapan tenaga kerja terdidik di wilayah urban dengan karakteristik capaian IPM yang tinggi.</span>
+    • <b>Persamaan Model Regresi:</b> y = {m2:.4f}x + ({c2:.4f}) <br>
+    • <b>Koefisien Korelasi Pearson (r):</b> <b>{r2:.4f}</b> (Hubungan Positif Lemah)<br>
+    <span style="color:#475569;"><b>Interpretasi:</b><br>
+    Terdapat hubungan positif yang lemah antara Indeks Pembangunan Manusia (IPM) dan Tingkat Pengangguran Terbuka (TPT) pada kabupaten/kota di Provinsi Aceh. Nilai korelasi yang relatif rendah menunjukkan bahwa keterkaitan antara kedua indikator tidak kuat. Hasil ini mengindikasikan bahwa daerah dengan IPM yang lebih tinggi tidak selalu memiliki tingkat pengangguran yang lebih rendah maupun lebih tinggi. Variasi TPT kemungkinan dipengaruhi oleh faktor lain seperti struktur ekonomi daerah, kesempatan kerja, investasi, dan karakteristik angkatan kerja.</span>
 </div>
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
@@ -470,15 +472,18 @@ st.markdown("""
     <h4 style="margin-top:0; color:#0066C2; font-size:16px; font-weight:700;">
         📊 Temuan Utama Analisis Statistik:
     </h4>
-    <div style="display:flex; flex-direction:column; gap:12px; margin-top:15px; font-size:14px; color:#334155;">
-        <div style="padding:10px 15px; background-color:#F0F9FF; border-left:4px solid #0284C7; border-radius:4px;">
-            <b>• Pembangunan Manusia Optimal:</b> Capaian IPM tertinggi diraih oleh <b>Kota Banda Aceh</b> (89.55), sedangkan batas minimum tercatat di <b>Kota Subulussalam</b> (71.63).
+    <div style="display:flex; flex-direction:column; gap:16px; margin-top:15px; font-size:14px; color:#334155;">
+        <div style="padding:12px 15px; background-color:#F0F9FF; border-left:4px solid #0284C7; border-radius:4px;">
+            <b>• Indeks Pembangunan Manusia (IPM)</b><br>
+            Nilai IPM tertinggi tercatat pada Kota Banda Aceh sebesar 89,55, sedangkan nilai terendah terdapat pada Kota Subulussalam sebesar 71,63. Temuan ini menunjukkan adanya variasi tingkat pembangunan manusia antar kabupaten/kota di Provinsi Aceh.
         </div>
-        <div style="padding:10px 15px; background-color:#FEF2F2; border-left:4px solid #EF4444; border-radius:4px;">
-            <b>• Disparitas Kesejahteraan:</b> Batas atas persentase kemiskinan berada di wilayah <b>Aceh Singkil</b> senilai <b>17.07%</b>, sedangkan area dengan tingkat kemiskinan terendah adalah <b>Kota Banda Aceh</b> (5.45%).
+        <div style="padding:12px 15px; background-color:#FEF2F2; border-left:4px solid #EF4444; border-radius:4px;">
+            <b>• Tingkat Kemiskinan</b><br>
+            Persentase penduduk miskin tertinggi tercatat di Aceh Singkil sebesar 17,07%, sementara tingkat kemiskinan terendah berada di Kota Banda Aceh sebesar 5,45%. Perbedaan ini menggambarkan masih adanya disparitas kesejahteraan antarwilayah.
         </div>
-        <div style="padding:10px 15px; background-color:#FFFBEB; border-left:4px solid #F59E0B; border-radius:4px;">
-            <b>• Tantangan Ketenagakerjaan:</b> Tingkat Pengangguran Terbuka (TPT) tertinggi didapatkan pada wilayah <b>Kota Lhokseumawe</b> sebesar <b>8.24%</b>, dan TPT paling terkendali berada di <b>Bener Meriah</b> (2.10%).
+        <div style="padding:12px 15px; background-color:#FFFBEB; border-left:4px solid #F59E0B; border-radius:4px;">
+            <b>• Tingkat Pengangguran Terbuka (TPT)</b><br>
+            TPT tertinggi terdapat di Kota Lhokseumawe sebesar 8,24%, sedangkan TPT terendah berada di Bener Meriah sebesar 2,10%. Kondisi ini menunjukkan adanya perbedaan dinamika pasar kerja dan penyerapan tenaga kerja antar daerah di Aceh.
         </div>
     </div>
 </div>
