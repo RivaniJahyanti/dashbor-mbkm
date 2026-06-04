@@ -344,8 +344,8 @@ def generate_premium_scatter(data, x_col, y_col, marker_color):
         margin=dict(l=60, r=40, t=30, b=60)
     )
     
-    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='#F1F5F9', zeroline=False, bordercolor='#E2E8F0', linecolor='#E2E8F0')
-    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='#F1F5F9', zeroline=False, bordercolor='#E2E8F0', linecolor='#E2E8F0')
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='#F1F5F9', zeroline=False, linecolor='#E2E8F0')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='#F1F5F9', zeroline=False, linecolor='#E2E8F0')
     
     return fig, m, c, r
 
