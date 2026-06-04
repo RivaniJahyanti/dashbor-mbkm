@@ -8,7 +8,7 @@ import numpy as np
 st.set_page_config(
     layout="wide",
     page_title="Rivani Jahyanti - 2308108010024",
-    page_icon=""
+    page_icon="📊"
 )
 
 # --- 2. CUSTOM CSS PREMIUM ---
@@ -250,7 +250,7 @@ with col_kpi3:
 # --- 7. SEKSI RANKING KINERJA (BAR CHART) ---
 st.markdown("""
 <div class="section-banner-card">
-    <p class="section-banner-text">Perbandingan Indikator Antar Kabupaten/Kota</p>
+    <p class="section-banner-text">📊 Perbandingan Indikator Antar Kabupaten/Kota</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -301,7 +301,7 @@ with tab3:
 # --- 8. SEKSI LINEAR CORRELATION (SCATTER PLOT) ---
 st.markdown("""
 <div class="section-banner-card">
-    <p class="section-banner-text">Analisis Korelasi dan Regresi Linier</p>
+    <p class="section-banner-text">📊 Analisis Korelasi dan Regresi Linier</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -329,8 +329,7 @@ def generate_premium_scatter(data, x_col, y_col, marker_color):
             size=15, 
             color=marker_color, 
             opacity=0.9, 
-            line=dict(width=1.5, color='#FFFFFF'),
-            shadow=dict(color="rgba(0,0,0,0.1)", blur=4, x=0, y=2)
+            line=dict(width=1.5, color='#FFFFFF')
         )
     ))
     
@@ -489,8 +488,8 @@ st.markdown("""
 # --- 12. PROFESSIONAL FOOTER ---
 st.markdown("""
 <div style="text-align: center; border-top: 1px solid #E2E8F0; padding-top: 25px; margin-top: 60px;">
-    <p style="font-size: 14px; color: #1E293B; font-weight:700; margin: 0;"> Dashboard Statistik Regional dan Area Kecil Provinsi Aceh - Tahun Data 2025</p>
+    <p style="font-size: 14px; color: #1E293B; font-weight:700; margin: 0;">📊 Dashboard Statistik Regional dan Area Kecil Provinsi Aceh - Tahun Data 2025</p>
     <p style="font-size: 12px; color: #0066C2; font-weight:600; margin: 5px 0 0 0;">Dashboard Statistik Interaktif oleh: Rivani Jahyanti | NPM: 2308108010024</p>
-    <p style="font-size: 11px; color: #94A3B8; margin: 3px 0 0 0;">Sumber Data Resmi: Badan Pusat Statistik (BPS) </p>
+    <p style="font-size: 11px; color: #94A3B8; margin: 3px 0 0 0;">Sumber Data Resmi: Badan Pusat Statistik (BPS)</p>
 </div>
 """, unsafe_allow_html=True)
